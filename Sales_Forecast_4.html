@@ -14279,11 +14279,11 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Time-Series-Analysis-Phases">Time Series Analysis Phases<a class="anchor-link" href="#Time-Series-Analysis-Phases">&#182;</a></h1><ol>
 <li><a href="https://mstuartproj.github.io/sales_forecast/index.html">Data Import, Validation, and Merge</a></li>
-<li><a href="https://mstuartproj.github.io/sales_forecast/Sales_Forecast_2.html">Exploratory Data Analysis: Stores and Departments</a></li>
+<li><a href="https://mstuartproj.github.io/sales_forecast/Sales_Forecast_2.html">Exploratory Data Analysis: Stores, Departments, and Total Sales</a></li>
 <li><a href="https://mstuartproj.github.io/sales_forecast/Sales_Forecast_3.html">Exploratory Data Analysis: Weekly Sales</a></li>
-<li><a href="https://mstuartproj.github.io/sales_forecast/Sales_Forecast_4.html">Feature creation and selection</a></li>
-<li><a href="https://mstuartproj.github.io/sales_forecast/Sales_Forecast_5.html">Modeling and Forecasting: Random Forest Regression</a></li>
-<li><a href="https://mstuartproj.github.io/sales_forecast/Sales_Forecast_6.html">Modeling and Forecasting: SARIMA</a></li>
+<li><a href="https://mstuartproj.github.io/sales_forecast/Sales_Forecast_4.html">Feature Creation and Selection</a></li>
+<li><a href="https://mstuartproj.github.io/sales_forecast/Sales_Forecast_5.html">Modeling and Prediction: Random Forest Regression</a></li>
+<li><a href="https://mstuartproj.github.io/sales_forecast/Sales_Forecast_6.html">Modeling and Prediction: SARIMA</a></li>
 </ol>
 
 </div>
@@ -14296,8 +14296,8 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Phase-4.-Feature-Selection-and-Creation">Phase 4. Feature Selection and Creation<a class="anchor-link" href="#Phase-4.-Feature-Selection-and-Creation">&#182;</a></h1><h2 id="Correlations-Between-Features">Correlations Between Features<a class="anchor-link" href="#Correlations-Between-Features">&#182;</a></h2><p>We created a heatmap showing a correlation matrix of the features.
-We noted these relationships:</p>
+<h1 id="Phase-4.-Feature-Selection-and-Creation">Phase 4. Feature Selection and Creation<a class="anchor-link" href="#Phase-4.-Feature-Selection-and-Creation">&#182;</a></h1><h2 id="Correlations-Between-Features">Correlations Between Features<a class="anchor-link" href="#Correlations-Between-Features">&#182;</a></h2><p>To explore the relationship between features, we created a heatmap showing a correlation matrix. There did not appear to be a strong relationship between the features, with the exception of one pair of Markdown features. There was not a strong correlation between any of the features and weekly sales, which is our target for forecasting.</p>
+<p>We noted these relationships:</p>
 <ul>
 <li>Most features had a low degree of correlation with other features (less than &plusmn; 0.30).</li>
 <li>Looking at the vertical column for weekly sales, which was being forecasted, most other features had near zero correlation. Weekly sales had low correlation with the size of the store (0.24).</li>
@@ -14315,7 +14315,7 @@ We noted these relationships:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[38]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -14333,7 +14333,7 @@ We noted these relationships:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Read in fulldata.csv</span>
@@ -14348,7 +14348,7 @@ We noted these relationships:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Show any correlations between features using a heatmap</span>
@@ -14376,7 +14376,7 @@ We noted these relationships:</p>
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[40]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
 
 
 
@@ -14420,17 +14420,23 @@ We noted these relationships:</p>
 The function performs these steps:</p>
 <ul>
 <li>Recoded the Date feature as two new numerical features representing the week number and the year. The first date in the provided data set is week number 5 of the year 2010.</li>
-<li>Recoded the IsHoliday as numerical 0=False and 1=True.</li>
-<li>Recoded the the store Type as three new features using One Hot Encoding. The new features were numerical TypeA, TypeB, and TypeC whose values are 0=False and 1=True.</li>
-<li>Dropped the original Type and IsHoliday features, but keep the Date feature for now. The Date feature was needed later when splitting the training and validation sets.</li>
+<li>Recoded the IsHoliday features as numerical 0=False and 1=True.</li>
+<li>Recoded the store Type as three new features using One Hot Encoding. The new features were numerical TypeA, TypeB, and TypeC whose values are 0=False and 1=True.</li>
+<li>Dropped the original Type and IsHoliday features, but kept the Date feature temporarily. The Date feature was needed later when splitting the training and validation sets.</li>
 <li>Dropped the markdown features. This data is very incomplete. Future analysis can include these features when more data is available.</li>
 </ul>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="https://mstuartproj.github.io/sales_forecast/horizontal-line-gray.png" alt="horizontal line"></p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="n">thedataset</span><span class="p">):</span>
@@ -14474,14 +14480,16 @@ The function performs these steps:</p>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Call the function to recode features, create new ones, and drop those we don&#39;t need</span>
 <span class="n">finalfeatureset</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">fulldata</span><span class="p">)</span>
+
+<span class="n">finalfeatureset</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -14489,10 +14497,166 @@ The function performs these steps:</p>
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Store</th>
+      <th>Dept</th>
+      <th>Date</th>
+      <th>Weekly_Sales</th>
+      <th>Size</th>
+      <th>Temperature</th>
+      <th>Fuel_Price</th>
+      <th>CPI</th>
+      <th>Unemployment</th>
+      <th>Year</th>
+      <th>WeekNum</th>
+      <th>IsHolidayInt</th>
+      <th>TypeA</th>
+      <th>TypeB</th>
+      <th>TypeC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>2010-02-05</td>
+      <td>24924.50</td>
+      <td>151315</td>
+      <td>42.31</td>
+      <td>2.572</td>
+      <td>211.096358</td>
+      <td>8.106</td>
+      <td>2010</td>
+      <td>5</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>2010-02-12</td>
+      <td>46039.49</td>
+      <td>151315</td>
+      <td>38.51</td>
+      <td>2.548</td>
+      <td>211.242170</td>
+      <td>8.106</td>
+      <td>2010</td>
+      <td>6</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>1</td>
+      <td>2010-02-19</td>
+      <td>41595.55</td>
+      <td>151315</td>
+      <td>39.93</td>
+      <td>2.514</td>
+      <td>211.289143</td>
+      <td>8.106</td>
+      <td>2010</td>
+      <td>7</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>1</td>
+      <td>2010-02-26</td>
+      <td>19403.54</td>
+      <td>151315</td>
+      <td>46.63</td>
+      <td>2.561</td>
+      <td>211.319643</td>
+      <td>8.106</td>
+      <td>2010</td>
+      <td>8</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>1</td>
+      <td>2010-03-05</td>
+      <td>21827.90</td>
+      <td>151315</td>
+      <td>46.50</td>
+      <td>2.625</td>
+      <td>211.350143</td>
+      <td>8.106</td>
+      <td>2010</td>
+      <td>9</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Create-the-training-set-and-validation-set">Create the training set and validation set<a class="anchor-link" href="#Create-the-training-set-and-validation-set">&#182;</a></h2><p>We split the full feature set into a training set and a validation set based on dates. Then we save the these two data sets as separate CSV files.</p>
+<p><img src="https://mstuartproj.github.io/sales_forecast/horizontal-line-orange.png" alt="horizontal line"></p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Create-the-training-set-and-validation-set">Create the training set and validation set<a class="anchor-link" href="#Create-the-training-set-and-validation-set">&#182;</a></h2><p>We split the full feature set into a training set and a validation set based on dates. We dropped the Date column prior to saving the data sets as separate CSV files.</p>
 <ul>
 <li>The <strong>training set</strong> contains 80% of the rows and it ranges from 2/5/2010 to 1/31/2012.</li>
 <li>The <strong>validation set</strong> contains 13% of the row and it ranges from 4/1/2012 to 7/31/2012.</li>
@@ -14501,10 +14665,16 @@ The function performs these steps:</p>
 </blockquote>
 
 </div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="https://mstuartproj.github.io/sales_forecast/horizontal-line-gray.png" alt="horizontal line"></p>
+
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[43]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#The training set has 80% (79.9%) of the rows</span>
@@ -14519,9 +14689,6 @@ The function performs these steps:</p>
 <span class="n">training_set</span> <span class="o">=</span> <span class="n">finalfeatureset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">between_two_dates</span><span class="p">]</span>
 <span class="c1">#Reset the values in the index column to be sequential</span>
 <span class="n">training_set</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="c1">#Drop the Date column because we recoded it as numeric</span>
-<span class="c1">#We waited until now because we need the Date for the split</span>
-<span class="n">training_set</span> <span class="o">=</span> <span class="n">training_set</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -14532,7 +14699,7 @@ The function performs these steps:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#The unused set has 7.0% of the rows</span>
@@ -14547,9 +14714,6 @@ The function performs these steps:</p>
 <span class="n">unused_set</span> <span class="o">=</span> <span class="n">finalfeatureset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">between_two_dates</span><span class="p">]</span>
 <span class="c1">#Reset the values in the index column to be sequential</span>
 <span class="n">unused_set</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="c1">#Drop the Date column because we recoded it as numeric</span>
-<span class="c1">#We waited until now because we need the Date for the split</span>
-<span class="n">unused_set</span> <span class="o">=</span> <span class="n">unused_set</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -14560,7 +14724,7 @@ The function performs these steps:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#The validation_set has 13% (13.1%) of the rows</span>
@@ -14575,9 +14739,6 @@ The function performs these steps:</p>
 <span class="n">validation_set</span> <span class="o">=</span> <span class="n">finalfeatureset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">between_two_dates</span><span class="p">]</span>
 <span class="c1">#Reset the values in the index column to be sequential</span>
 <span class="n">validation_set</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="c1">#Drop the Date column because we recoded it as numeric</span>
-<span class="c1">#We waited until now because we need the Date for the split</span>
-<span class="n">validation_set</span> <span class="o">=</span> <span class="n">validation_set</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -14588,10 +14749,15 @@ The function performs these steps:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[46]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Save the training and validation feature sets to new CSVs</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Save the training set to CSV with dates and also without dates.</span>
+<span class="c1">#The dates should be removed for modeling, since these were recoded</span>
+<span class="c1">#as week numbers and years. But the dates are needed for later</span>
+<span class="c1">#plotting of predictions vs actual sales.</span>
+<span class="n">training_set</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data_merged/trainingdata_withdates.csv&#39;</span><span class="p">)</span>
+<span class="n">training_set</span> <span class="o">=</span> <span class="n">training_set</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">])</span>
 <span class="n">training_set</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data_merged/trainingdata.csv&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -14603,10 +14769,14 @@ The function performs these steps:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[47]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">unused_set</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data_merged/unuseddata.csv&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Save the unused set to CSV with dates and also without dates.</span>
+<span class="c1">#These are not actually used in the analysis</span>
+<span class="n">unused_set</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data_merged/unuseddata_withdates.csv&#39;</span><span class="p">)</span>
+<span class="n">unused_set</span> <span class="o">=</span> <span class="n">unused_set</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">])</span>    
+<span class="n">unused_set</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data_merged/unuseddata.csv&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14617,10 +14787,16 @@ The function performs these steps:</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">validation_set</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data_merged/validationdata.csv&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Save the validation set to CSV with dates and also without dates.</span>
+<span class="c1">#The dates should be removed for modeling, since these were recoded</span>
+<span class="c1">#as week numbers and years. But the dates are needed for later</span>
+<span class="c1">#plotting of predictions vs actual sales.</span>
+<span class="n">validation_set</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data_merged/validationdata_withdates.csv&#39;</span><span class="p">)</span>
+<span class="n">validation_set</span> <span class="o">=</span> <span class="n">validation_set</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">])</span>
+<span class="n">validation_set</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data_merged/validationdata.csv&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
